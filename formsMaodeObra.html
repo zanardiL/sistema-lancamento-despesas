@@ -1,0 +1,141 @@
+
+  <!DOCTYPE html>
+  <html>
+    
+    <head>
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
+      <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    </head>
+
+    <body>     
+     <div class = "objeto">
+        <div class="row">
+            <form class="col s12">
+              <div class="row">
+
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="data" type="date" class="validate">
+                  <label for="data">Data</label>
+                </div>
+
+                <div class="col s6">
+                  <label class ="activate">Local de atuação do colaborador</label>
+                  <select id="local" class="browser-default">
+                      <option value="" disabled selected>Selecione</option>
+                      <optgroup label="Administrativo">
+                        <option value="Admnistrativo">Escritório</option>
+                      </optgroup>
+                      <optgroup label="Locação">
+                          <option value="Itu">Itu</option>
+                      </optgroup>
+                      <optgroup label="Construção">
+                        <option value="Ventura">Ventura</option>
+                        <option value="Casa 02">Casa 02</option>
+                        <option value="Casa 03">Casa 03</option>
+                        <option value="Casa 04">Casa 04</option>
+                      </optgroup>
+                    </select>
+                  </div>
+              </div>
+
+              
+              <div class="row">
+                  <div class="col s6">
+                  <label class="activate">Tipo de pagamento</label>
+                  <select id="tipo-pagamento" class="browser-default">
+                          <option value="" disabled selected>Selecione</option>
+                          <option value="Pagamento mensal">Pagamento mensal</option>
+                          <option value="Recibos">Recibos (por fora)</option>
+                    </select>
+                </div>
+
+                <div class="input-field col s6">
+                      <input placeholder="R$ 0,00" id="valor-total" type="number" step="0,01">
+                      <label class="active" for="valor-total">Valor total</label>
+                  </div>
+              </div>
+              
+
+              <div class="row">
+                <div class="col s12"><br><br><br>
+                  <button class="grey darken-4 btn float-right" id="btsalvar"><i class="material-icons left">save</i>SALVAR</button>
+                </div>
+              </div>
+
+              </div>
+            </form>  
+          </div>  
+
+     <script>
+   
+
+
+       
+       
+       
+        var CampoData = document.getElementById("data");
+        var CampoLocal = document.getElementById("local");
+        var CampoValorTotal = document.getElementById("valor-total");
+        var CampoTipoPagamento = document.getElementById("tipo-pagamento");
+       
+       document.getElementById("btsalvar").addEventListener("click", salvarNFMaodeObra);
+
+       function salvarNFMaodeObra() {
+          var Data = CampoData.value;
+          var ValorTotal = CampoValorTotal.value;
+          var Local = CampoLocal.value;
+          var TipoPagamento = CampoTipoPagamento.value;
+                  
+
+         if(Data.trim().length == 0 || ValorTotal.trim().length == 0 || Local.trim().length == 0 || ValorTotal.trim().length == 0 ) {
+           M.toast({
+             html: "Preencha todos os campos"
+             });
+         }
+         else{
+           var DadosNFMaoDeObra = {
+            Data:CampoData.value,
+            Local:CampoLocal.value,
+            TipoPagamento:CampoTipoPagamento.value,
+            ValorTotal:CampoValorTotal.value,
+            };
+
+         google.script.run.withSuccessHandler(SalvarNF).salvarNFMAODEOBRA(DadosNFMaoDeObra);
+
+         function SalvarNF(Atualizar) {
+           M.toast({html:Atualizar});
+
+           if(Atualizar != "NF já cadastrada!") {
+
+            CampoData.value = "";
+            CampoLocal.value = "";
+            CampoTipoPagamento.value = "";
+            CampoValorTotal.value ="";
+          }
+         }
+        }
+       }
+      
+      
+
+      </script>
+
+
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    </body>
+  </html>
+        

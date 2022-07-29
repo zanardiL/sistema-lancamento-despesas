@@ -1,0 +1,204 @@
+
+  <!DOCTYPE html>
+  <html>
+    
+    <head>
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
+      <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    </head>
+
+    <body>     
+     <div class = "objeto">
+        <div class="row">
+            <form class="col s12">
+              <div class="row">
+
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="data-emissao" type="date" class="validate">
+                  <label for="data-emissao">Data de emissão</label>
+                </div>
+
+                <div class="input-field col s6">
+                  <input placeholder="1234" id="nf" type="text">
+                  <label class="active" for="nf">NF</label>
+                </div>
+              </div>
+
+               <div class="row">
+                  <div class="input-field col s12">
+                    <input placeholder="Empresa A" id="fornecedor" type="text">
+                    <label class="active" for="fornecedor">Fornecedor</label>
+                  </div>             
+               </div>  
+
+               <div class = "row">
+                <div class="input-field col s16">
+                  <input placeholder="R$ 0,00" id="valor-total" type="number" step="0.01">
+                  <label class="active" for="valor-total">Valor total da NF</label>
+                </div>
+
+                <div class="input-field col s16">
+                  <input placeholder="Separe as datas por vírgulas" id="faturamento" type="text" >
+                  <label class="active" for="faturamento">Faturamento</label>
+                </div>
+              </div>
+
+               <div class="row">
+                  <div class="input-field col s4">
+                    <input placeholder="Ex.: Comboio" id="maquinas1" type="text" class="autocomplete" >
+                    <label class="active" for="maquinas1">Máquina/Veículo</label>
+                  </div>
+                        
+                  <div class="input-field col s4">
+                    <input placeholder="R$ 0,00" id="valor1" type="number" step="0.01" >
+                    <label class="active">Valor referente</label>
+                  </div>
+
+                  <div class="input-field col s4">
+                    <input placeholder="123,45" id="consumo1" type="number" step="0.01">
+                    <label class="active">Consumo (L)</label>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="input-field col s4">
+                    <input placeholder="Ex.: 700J" id="maquinas2" type="text" class="autocomplete">
+                    <label class="active" for="maquinas2">Máquina/Veículo</label>
+                  </div>
+                        
+                  <div class="input-field col s4">
+                    <input placeholder="R$ 0,00" id="valor2" type="number" step="0.01" >
+                    <label class="active">Valor referente</label>
+                  </div>
+
+                  <div class="input-field col s4">
+                    <input placeholder="678,91" id="consumo2" type="number" step="0.01">
+                    <label class="active">Consumo (L)</label>
+                  </div>
+              </div>
+              
+              
+
+              <div class="row">
+                <div class="input-field col s12"> <br>
+                  <button class="grey darken-4 btn float-right" id="btsalvar"><i class="material-icons left">save</i>SALVAR</button>
+                </div>
+              </div>
+
+              </div>
+            </form>  
+          </div>
+     </div>
+
+  
+
+     <script>
+   
+       function verificarNF() {
+         var NF = document.getElementById("nf").value;
+         google.script.run.withSuccessHandler(Retorno).verificarNF(NF);
+       }
+
+       
+       
+       
+        var CampoDataEmissao = document.getElementById("data-emissao");
+        var CampoNF = document.getElementById("nf");
+        var CampoFornecedor = document.getElementById("fornecedor");
+        var CampoValorTotal = document.getElementById("valor-total");
+        var CampoFaturamento = document.getElementById("faturamento");
+        var CampoValor1 = document.getElementById("valor1");
+        var CampoMaquinas1 = document.getElementById("maquinas1");
+        var CampoConsumo1 = document.getElementById("consumo1");
+        var CampoValor2 = document.getElementById("valor2");
+        var CampoMaquinas2 = document.getElementById("maquinas2");
+        var CampoConsumo2 = document.getElementById("consumo2");
+
+       
+       document.getElementById("btsalvar").addEventListener("click", salvarNFAbastecimento);
+
+       function salvarNFAbastecimento() {
+          var Data = CampoDataEmissao.value;
+          var NF = CampoNF.value;
+          var Fornecedor = CampoFornecedor.value;
+          var ValorTotal = CampoValorTotal.value;
+          var Faturamento = CampoFaturamento.value;
+          var Valor1 = CampoValor1.value;
+          var Maquinas1 = CampoMaquinas1.value;
+          var Consumo1 = CampoConsumo1.value;
+          var Valor2 = CampoValor2.value; 
+          var Maquinas2 = CampoMaquinas2.value;
+          var Consumo2 = CampoConsumo2.value; 
+
+        
+
+         if(Data.trim().length == 0 || NF.trim().length == 0 || Fornecedor.trim().length == 0 || ValorTotal.trim().length == 0 || Faturamento.trim().length == 0 ) {
+           M.toast({
+             html: "Preencha todos os campos"
+             });
+         }
+         else{
+           var DadosNFAbastecimento = {
+            Data:CampoDataEmissao.value,
+            NF:CampoNF.value,
+            Fornecedor:CampoFornecedor.value,
+            ValorTotal:CampoValorTotal.value,
+            Faturamento:CampoFaturamento.value,
+            Valor1:CampoValor1.value,
+            Maquinas1:CampoMaquinas1.value,
+            Consumo1:CampoConsumo1.value,
+            Valor2:CampoValor2.value,
+            Maquinas2:CampoMaquinas2.value,
+            Consumo2:CampoConsumo2.value,
+
+
+            };
+
+         google.script.run.withSuccessHandler(SalvarNF).salvarNFABASTECIMENTO(DadosNFAbastecimento);
+
+         function SalvarNF(Atualizar) {
+           M.toast({html:Atualizar});
+
+           if(Atualizar != "NF já cadastrada!") {
+
+            CampoDataEmissao.value = "";
+            CampoNF.value = "";
+            CampoFornecedor.value = "";
+            CampoValorTotal.value ="";
+            CampoFaturamento.value ="";
+            CampoValor1.value ="";
+            CampoMaquinas1.value ="";
+            CampoConsumo1.value ="";
+            CampoValor2.value ="";
+            CampoConsumo2.value ="";
+            CampoMaquinas2.value ="";
+
+            
+          }
+         }
+        }
+       }
+      
+      
+
+      </script>
+
+
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    </body>
+  </html>
+        

@@ -1,0 +1,200 @@
+
+  <!DOCTYPE html>
+  <html>
+    
+    <head>
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
+      <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    </head>
+
+    <body>     
+     <div class = "objeto">
+        <div class="row">
+            <form class="col s12">
+              <div class="row">
+
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="data-emissao" type="date" class="validate">
+                  <label for="data-emissao">Data de emissão</label>
+                </div>
+
+                <div class="input-field col s6">
+                  <input placeholder="1234" id="nf" type="text">
+                  <label class="active" for="nf">NF</label>
+                </div>
+              </div>
+
+               <div class="row">
+                  <div class="input-field col s6">
+                    <input placeholder="Empresa A" id="fornecedor" type="text">
+                    <label class="active" for="fornecedor">Fornecedor</label>
+                  </div>             
+                  
+                  <div class="col s6">
+                    <label class ="activate">Segmento</label>
+                    <select id="segmento" class="browser-default">
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="Locação">Locação</option>
+                    </select>
+                  </div>
+               </div>
+
+               <div class="row">
+                <div class="col s6">
+                      <label class ="activate">Classe de custo</label>
+                      <select id="classe-de-custo" class="browser-default">
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="Peças">Peças</option>
+                        <option value="Servicos de terceiros">Serviços de terceiros</option>
+                      </select>
+                    </div>
+                
+                  <div class="col s6">
+                    <label class ="activate">Manutenção</label>
+                    <select id="manutencao" class="browser-default">
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="Corretiva">Corretiva</option>
+                      <option value="Preventiva">Preventiva</option>
+                      <option value=""></option>
+                    </select>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="input-field col s12">
+                  <input placeholder="Separe as máquinas por vírgula" id="maquinas" type="text" >
+                  <label class="active" for="maquinas">Máquina/Veículo</label>
+                </div>
+
+
+               </div>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="R$ 0,00" id="valor" type="number" step="0,01" class="validate" >
+                  <label class="active">Valor</label>
+                </div>
+
+                <div class="input-field col s6">
+                  <input placeholder="Separe as datas por vírgula" id="faturamento" type="text">
+                  <label class="active">Faturamento</label>
+                </div>
+              </div>
+
+                <div class="input-field col s12">
+                  <input id="descricao" type="text" >
+                  <label class="active" for="descricao">Descrição</label>
+                </div>
+
+                <div class="input-field col s12"> <br>
+
+                  <button class="grey darken-4 btn float-right" id="btsalvar"><i class="material-icons left">save</i>SALVAR</button>
+                </div>
+                
+              </div>
+            </form>  
+          </div>
+     </div>
+
+  
+
+     <script>
+   
+       function verificarNF() {
+         var NF = document.getElementById("nf").value;
+         google.script.run.withSuccessHandler(Retorno).verificarNF(NF);
+       }
+
+       
+       
+       
+       var CampoDataEmissao = document.getElementById("data-emissao");
+       var CampoNF = document.getElementById("nf");
+       var CampoFornecedor = document.getElementById("fornecedor");
+       var CampoSegmento = document.getElementById("segmento");
+       var CampoValor = document.getElementById("valor");
+       var CampoFaturamento = document.getElementById("faturamento");
+       var CampoDescricao = document.getElementById("descricao");
+       var CampoClasseCusto = document.getElementById("classe-de-custo");
+       var CampoManutencao = document.getElementById("manutencao");
+       var CampoMaquinas = document.getElementById("maquinas");
+
+       
+       document.getElementById("btsalvar").addEventListener("click", salvarNFLocacao);
+
+       function salvarNFLocacao() {
+         var Data = CampoDataEmissao.value;
+         var NF = CampoNF.value;
+         var Fornecedor = CampoFornecedor.value;
+         var Segmento = CampoSegmento.value;
+         var Valor = CampoValor.value;
+         var Faturamento = CampoFaturamento.value;
+         var Descricao = CampoDescricao.value;
+         var ClasseCusto = CampoClasseCusto.value;
+         var Manutencao = CampoManutencao.value;
+         var Maquinas = CampoMaquinas.value;
+
+         if(Data.trim().length == 0 || NF.trim().length == 0 || Fornecedor.trim().length == 0 || Segmento.trim().length == 0 || Valor.trim().length == 0 || Faturamento.trim().length == 0 || Descricao.trim().length == 0  ) {
+           M.toast({
+             html: "Preencha todos os campos"
+             });
+         }
+         else{
+           var DadosNFLocacao = {
+            Data:CampoDataEmissao.value,
+            NF:CampoNF.value,
+            Fornecedor:CampoFornecedor.value,
+            Segmento:CampoSegmento.value,
+            ClasseCusto:CampoClasseCusto.value,
+            Valor:CampoValor.value,
+            Faturamento:CampoFaturamento.value,
+            Descricao:CampoDescricao.value,
+            Manutencao:CampoManutencao.value,
+            Maquinas:CampoMaquinas.value,
+            };
+
+         google.script.run.withSuccessHandler(SalvarNF).salvarNFLOCACAO(DadosNFLocacao);
+
+         function SalvarNF(Atualizar) {
+           M.toast({html:Atualizar});
+
+           if(Atualizar != "NF já cadastrada!") {
+
+            CampoDataEmissao.value = "";
+            CampoNF.value = "";
+            CampoFornecedor.value = "";
+            CampoSegmento.value = "";
+            CampoClasseCusto.value = "";
+            CampoManutencao.value = "";
+            CampoMaquinas.value = "";
+            CampoValor.value = "";
+            CampoFaturamento.value = "";
+            CampoDescricao.value = "";
+            
+          }
+         }
+        }
+       }
+      
+      
+
+      </script>
+
+
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    </body>
+  </html>
+        
